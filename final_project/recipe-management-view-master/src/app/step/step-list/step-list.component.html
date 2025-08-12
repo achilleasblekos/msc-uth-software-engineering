@@ -1,0 +1,48 @@
+<div class="container">
+  <h1>Λίστα Βημάτων Συνταγής</h1>
+  <!-- *ngif="!recipeId?.length" -->
+  <button
+    *ngIf="recipeId.length"
+    mat-raised-button
+    style="color: white; background-color: green"
+    [routerLink]="['/step/create', recipeId, selectedTabIndex]"
+  >
+    Προσθήκη νέου βήματος
+  </button>
+  <p mat-line *ngIf="!recipeId.length">
+    Παρακαλώ δημιουργήστε πρώτα μία συνταγή.
+  </p>
+  <p mat-line *ngIf="!steps || steps.length === 0">Δεν υπάρχουν βήματα.</p>
+
+  <mat-list style="margin-top: 30px">
+    <mat-list-item *ngFor="let step of steps">
+      <h3 mat-line>{{ step.title }}</h3>
+      <p mat-line>Περιγραφή: {{ step.description }}</p>
+      <p mat-line>
+        Διάρκεια : {{ step.durationHours }} Ώρες -
+        {{ step.durationMinutes }} Λεπτά
+      </p>
+      <p mat-line>Σειρά Βήματος : {{ step.stepOrder }}</p>
+
+      <button
+        mat-raised-button
+        color="accent"
+        [routerLink]="['/step/edit', step.id, recipeId, selectedTabIndex]"
+        style="margin-right: 7px"
+      >
+        Επεξεργασία
+      </button>
+      <button mat-raised-button color="warn" (click)="deleteStep(step.id)">
+        Διαγραφή
+      </button>
+    </mat-list-item>
+  </mat-list>
+  <button
+    mat-raised-button
+    color="accent"
+    style="width: 200px"
+    routerLink="/recipe/list"
+  >
+    Επιστροφή στην αρχική
+  </button>
+</div>

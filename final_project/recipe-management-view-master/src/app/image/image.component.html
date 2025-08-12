@@ -1,0 +1,20 @@
+<div class="image-upload-container">
+  <input type="file" (change)="onFileChange($event)" />
+  <!-- <div *ngIf="previewUrl">
+    <img [src]="previewUrl" alt="Preview" class="image-preview" />
+  </div> -->
+  <button (click)="onUpload()">Upload</button>
+</div>
+
+<div *ngIf="images.length > 0">
+  <div class="recipe-images">
+    <div *ngFor="let image of images; let i = index" class="image-container">
+      <a [href]="image.url" target="_blank">
+        <img [src]="image.url" alt="Recipe Image" />
+      </a>
+      <button (click)="onDeleteImage(image.id, i)" class="delete-button" mat-icon-button>
+        <mat-icon>delete</mat-icon>
+      </button>
+    </div>
+  </div>
+</div>

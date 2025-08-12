@@ -1,0 +1,161 @@
+<div class="container">
+  <mat-tab-group animationDuration="0ms" [(selectedIndex)]="selectedTabIndex">
+    <mat-tab label="Συνταγή">
+      <form [formGroup]="recipeForm" class="recipe-form">
+        <h2>
+          {{ isEditMode ? "Επεξεργασία Συνταγής" : "Δημιουργία Συνταγής" }}
+        </h2>
+
+        <mat-form-field appearance="fill" class="form-field">
+          <mat-label>Τίτλος</mat-label>
+          <input
+            matInput
+            formControlName="name"
+            placeholder="Εισαγωγή Τίτλου"
+          />
+          <mat-error *ngIf="recipeForm.get('name')?.hasError('required')">
+            Ο τίτλος είναι υποχρεωτικό πεδίο
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="form-field">
+          <mat-label>Κατηγορία</mat-label>
+          <mat-select
+            placeholder="Επιλέξτε κατηγορία"
+            formControlName="category"
+            required
+          >
+            <mat-option *ngFor="let category of Catoptions" [value]="category">
+              {{ category }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="recipeForm.get('category')?.hasError('required')">
+            Η κατηγορία είναι υποχρεωτικό πεδίο
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="form-field">
+          <mat-label>Βαθμός δυσκολίας</mat-label>
+          <mat-select
+            placeholder="Επιλέξτε βαθμό δυσκολίας"
+            formControlName="difficulty"
+            required
+          >
+            <mat-option
+              *ngFor="let difficulty of Difoptions"
+              [value]="difficulty"
+            >
+              {{ difficulty }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="recipeForm.get('difficulty')?.hasError('required')">
+            Ο βαθμός δυσκολίας είναι υποχρεωτικό πεδίο
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="form-field">
+          <mat-label>Συνολικός χρόνος (Λεπτά)</mat-label>
+          <input
+            matInput
+            formControlName="totalTime"
+            type="number"
+            placeholder="Εισαγωγή συνολικού χρόνου"
+          />
+          <mat-error *ngIf="recipeForm.get('totalTime')?.hasError('required')">
+            Ο συνολικός χρόνος είναι υποχρεωτικό πεδίο
+          </mat-error>
+          <mat-error *ngIf="recipeForm.get('totalTime')?.hasError('min')">
+            Ο συνολικός χρόνος πρέπει να είναι τουλάχιστον 1 λεπτό
+          </mat-error>
+        </mat-form-field>
+
+        <h3>Εικόνες Συνταγής</h3>
+        <app-image [flag]="flag" [recipeId]="recipeId"></app-image>
+
+        <h3>Υλικά</h3>
+        <button
+          mat-raised-button
+          color="primary"
+          type="button"
+          style="width: 200px"
+          (click)="addIngredient()"
+          [disabled]="!recipe"
+        >
+          Προσθήκη Υλικών
+        </button>
+        <mat-card appearance="outlined"></mat-card>
+        <table
+          mat-table
+          [dataSource]="recipeIngredientArray"
+          class="mat-elevation-z8"
+        >
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef>Υλικό</th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.ingredient.name }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="quantity">
+            <th mat-header-cell *matHeaderCellDef>Ποσότητα</th>
+            <td mat-cell *matCellDef="let element">{{ element.quantity }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="unit">
+            <th mat-header-cell *matHeaderCellDef>Μονάδα</th>
+            <td mat-cell *matCellDef="let element">{{ element.unit }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef>Ενέργειες</th>
+
+            <td mat-cell *matCellDef="let element">
+              <button
+                mat-icon-button
+                color="primary"
+                matTooltip="Edit"
+                (click)="editIngredient(element)"
+              >
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button
+                mat-icon-button
+                color="warn"
+                (click)="deleteIngredient(element.id)"
+                matTooltip="Delete"
+              >
+                <mat-icon>delete</mat-icon>
+              </button>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        </table>
+        <div class="display:flex;">
+          <button
+            mat-raised-button
+            color="accent"
+            [disabled]="recipeForm.invalid || isCreated"
+            (click)="onSubmit()"
+            style="width: 200px; margin-right: 15px"
+          >
+            {{ isEditMode ? "Ενημέρωση Συνταγής" : "Δημιουργία Συνταγής" }}
+          </button>
+          <button
+            mat-raised-button
+            color="accent"
+            style="width: 200px"
+            routerLink="/recipe/list"
+          >
+            Επιστροφή στην αρχική
+          </button>
+        </div>
+      </form>
+    </mat-tab>
+
+    <mat-tab label="Βήματα Συνταγής">
+      <app-step-list [recipeId]="recipeId" [selectedTabIndex] ="selectedTabIndex" ></app-step-list>
+    </mat-tab>
+  </mat-tab-group>
+</div>

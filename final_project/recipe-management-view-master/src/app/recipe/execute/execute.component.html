@@ -1,0 +1,48 @@
+<div class="container">
+  <h1>Εκτέλεση Συνταγής: {{ recipe.name }}</h1>
+
+  <mat-progress-bar
+    mode="determinate"
+    [value]="progress"
+    class="progress-bar"
+  ></mat-progress-bar>
+
+  <div *ngIf="currentStep" class="step-container">
+    <h2>Βήμα {{ currentStepIndex + 1 }}: {{ currentStep.title }}</h2>
+    <p>{{ currentStep.description }}</p>
+    <h3>
+      Χρόνος: {{ currentStep.durationHours }} Ώρες -
+      {{ currentStep.durationMinutes }} Λεπτά
+    </h3>
+
+    <h3>Υλικά:</h3>
+    <ul>
+      <li *ngFor="let ingredient of currentStep.ingredients">
+        {{ ingredient.ingredient.name }} : {{ ingredient.quantity }} - {{
+          ingredient.unit
+        }}
+      </li>
+    </ul>
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="goToNextStep()"
+      [disabled]="isRecipeCompleted"
+    >
+      Επόμενο βήμα
+    </button>
+  </div>
+
+  <div *ngIf="hasNoSteps">
+    <h3>Δεν υπάρχουν Βήματα για την συγκεκριμμένη Συνταγή!</h3>
+    <button mat-raised-button color="accent" routerLink="/recipe/list">
+      Επιστροφή στη λίστα
+    </button>
+  </div>
+  <div *ngIf="isRecipeCompleted && !hasNoSteps">
+    <h3>Η συνταγή ολοκληρώθηκε! Καλή σας όρεξη!!</h3>
+    <button mat-raised-button color="accent" routerLink="/recipe/list">
+      Επιστροφή στη λίστα
+    </button>
+  </div>
+</div>

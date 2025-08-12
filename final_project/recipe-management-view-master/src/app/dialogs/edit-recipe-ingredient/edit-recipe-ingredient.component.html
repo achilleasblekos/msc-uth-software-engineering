@@ -1,0 +1,48 @@
+<h2 mat-dialog-title>Προσθήκη Υλικών</h2>
+
+<form [formGroup]="recipeIngredientForm">
+  <div mat-dialog-content>
+    <mat-form-field class="ingredient-field">
+      <mat-label>Υλικό</mat-label>
+      <input
+        matInput
+        placeholder="Υλικό"
+        formControlName="ingredient"
+        type="text"
+        required
+      />
+    </mat-form-field>
+    <!-- Ποσότητα -->
+    <mat-form-field class="quantity-field">
+      <input
+        matInput
+        placeholder="Ποσότητα"
+        formControlName="quantity"
+        type="number"
+        required
+      />
+    </mat-form-field>
+
+    <!-- Μονάδα -->
+    <mat-form-field class="unit-field">
+      <input
+        matInput
+        placeholder="Μονάδα (π.χ. γρ, κούπα)"
+        formControlName="unit"
+        required
+      />
+    </mat-form-field>
+  </div>
+
+  <div mat-dialog-actions>
+    <button mat-button (click)="onClose()">Ακύρωση</button>
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="save()"
+      [disabled]="recipeIngredientForm.invalid"
+    >
+      Αποθήκευση
+    </button>
+  </div>
+</form>

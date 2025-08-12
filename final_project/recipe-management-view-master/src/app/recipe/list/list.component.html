@@ -1,0 +1,39 @@
+
+
+<div class="container">
+  <h1>Λίστα Συνταγών</h1>
+
+  <p mat-line *ngIf="!recipes.length">Δεν υπάρχουν Συνταγές. Παρακαλώ δημιουργήστε μία συνταγή.</p>
+
+  <button mat-raised-button style="color: white;background-color: green;" routerLink="/recipe/create">
+    Προσθήκη νέας συνταγής
+  </button>
+
+  <mat-list style="margin-top: 30px">
+    <mat-list-item *ngFor="let recipe of recipes">
+      <h3 mat-line>{{ recipe.name }}</h3>
+      <p mat-line>Κατηγορία: {{ recipe.category }}</p>
+      <p mat-line>Δυσκολία: {{ recipe.difficulty }}</p>
+
+      <button
+        mat-raised-button
+        color="primary"
+        [routerLink]="['/recipe/execute', recipe.id]"
+        style="margin-right: 7px"
+      >
+        Εκτέλεση
+      </button>
+      <button
+        mat-raised-button
+        color="accent"
+        [routerLink]="['/recipe/edit', recipe.id]"
+        style="margin-right: 7px"
+      >
+        Επεξεργασία
+      </button>
+      <button mat-raised-button color="warn" (click)="deleteRecipe(recipe.id)">
+        Διαγραφή
+      </button>
+    </mat-list-item>
+  </mat-list>
+</div>

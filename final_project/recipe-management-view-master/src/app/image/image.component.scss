@@ -1,0 +1,26 @@
+.image-container {
+  position: relative;
+  display: inline-block;
+  margin: 10px;
+}
+
+.image-container img {
+  width: 150px; /* Σταθερό πλάτος */
+  height: 150px; /* Σταθερό ύψος */
+  object-fit: cover; /* Διατηρεί την αναλογία χωρίς να παραμορφώνει */
+  border: 1px solid #ccc; /* Προαιρετικό περίγραμμα */
+  border-radius: 5px; /* Στρογγυλεμένες γωνίες */
+}
+
+.delete-button {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background-color: rgba(255, 255, 255, 0.7); /* Ελαφρώς διάφανο υπόβαθρο */
+  border-radius: 50%;
+}
+
+mat-icon {
+  font-size: 18px; /* Μέγεθος του εικονιδίου */
+  color: red; /* Χρώμα του εικονιδίου */
+}

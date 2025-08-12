@@ -1,0 +1,150 @@
+<div class="container">
+  <form [formGroup]="stepForm" class="step-form">
+    <h2>{{ isEditMode ? "Επεξεργασία Βήματος" : "Δημιουργία Βήματος" }}</h2>
+
+    <mat-form-field appearance="fill" class="form-field">
+      <mat-label>Τίτλος</mat-label>
+      <input matInput formControlName="title" placeholder="Εισαγωγή τίτλου" />
+      <mat-error *ngIf="stepForm.get('title')?.hasError('required')">
+        Ο τίτλος είναι υποχρεωτικό πεδίο
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="form-field">
+      <mat-label>Περιγραφή</mat-label>
+      <input
+        matInput
+        formControlName="description"
+        placeholder="Εισαγωγή περιγραφής"
+      />
+      <mat-error *ngIf="stepForm.get('description')?.hasError('required')">
+        Η περιγραφή είναι υποχρεωτικό πεδίο
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="form-field">
+      <mat-label>Χρόνος (Ώρες)</mat-label>
+      <input
+        matInput
+        formControlName="durationHours"
+        type="number"
+        placeholder="Εισαγωγή χρόνου σε ώρες"
+      />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="form-field">
+      <mat-label>Χρόνος (Λεπτά)</mat-label>
+      <input
+        matInput
+        formControlName="durationMinutes"
+        type="number"
+        placeholder="Εισαγωγή χρόνου σε λεπτά"
+      />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="form-field">
+      <mat-label>Σειρά βήματος</mat-label>
+      <input
+        matInput
+        formControlName="stepOrder"
+        type="number"
+        placeholder="Εισαγωγή σειράς βήματος"
+      />
+      <mat-error *ngIf="stepForm.get('stepOrder')?.hasError('required')">
+        Η εισαγωγή σειράς βήματος είναι υποχρεωτικό πεδίο
+      </mat-error>
+      <mat-error *ngIf="stepForm.get('stepOrder')?.hasError('min')">
+        Η σειρά βήματος πρέπει να είναι μεγαλύτερη του 0
+      </mat-error>
+    </mat-form-field>
+
+    <h3>Εικόνες Βήματος</h3>
+    <app-image [flag]="flag" [recipeId]="recipeId" [stepId]="stepId"></app-image>
+
+    <h3>Υλικά</h3>
+    <button
+      mat-raised-button
+      color="primary"
+      type="button"
+      style="width: 200px"
+      (click)="addIngredient()"
+      [disabled]="!step"
+    >
+      Προσθήκη Υλικών
+    </button>
+    <mat-card appearance="outlined"></mat-card>
+    <table
+      mat-table
+      [dataSource]="stepIngredientArray"
+      class="mat-elevation-z8"
+    >
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef>Υλικό</th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.ingredient.name }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="quantity">
+        <th mat-header-cell *matHeaderCellDef>Ποσότητα</th>
+        <td mat-cell *matCellDef="let element">{{ element.quantity }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="unit">
+        <th mat-header-cell *matHeaderCellDef>Μονάδα</th>
+        <td mat-cell *matCellDef="let element">{{ element.unit }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>Ενέργειες</th>
+
+        <td mat-cell *matCellDef="let element">
+          <button
+            mat-icon-button
+            color="primary"
+            matTooltip="Edit"
+            (click)="editIngredient(element)"
+          >
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button
+            mat-icon-button
+            color="warn"
+            (click)="deleteIngredient(element.id)"
+            matTooltip="Delete"
+          >
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+    <!-- <mat-paginator
+    [pageSizeOptions]="[5, 10, 20]"
+    [length]="stepIngredientArray.length"
+    aria-label="Select page of periodic elements"
+  >
+  </mat-paginator> -->
+    <div class="display:flex;">
+      <button
+        mat-raised-button
+        color="accent"
+        [disabled]="stepForm.invalid || isCreated"
+        (click)="onSubmit()"
+        style="width: 200px; margin-right: 15px"
+      >
+        {{ isEditMode ? "Ενημέρωση Βήματος" : "Δημιουργία Βήματος" }}
+      </button>
+      <button
+        mat-raised-button
+        color="accent"
+        style="width: 200px"
+        (click)="goBackToList(selectedTabIndex)"
+      >
+        Επιστροφή
+      </button>
+    </div>
+  </form>
+</div>

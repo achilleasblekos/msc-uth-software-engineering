@@ -1,0 +1,76 @@
+<h2 mat-dialog-title>Προσθήκη Υλικών</h2>
+
+<form [formGroup]="stepIngredientsForm">
+  <div mat-dialog-content>
+    <div
+      formArrayName="stepIngredients"
+      *ngFor="let stepIngredient of stepIngredients.controls; let i = index"
+    >
+      <div [formGroupName]="i" class="stepIngredient-row">
+          <!-- Όνομα Υλικού -->
+        <mat-form-field class="ingredient-field">
+           <input
+            matInput
+            placeholder="Υλικό"
+            formControlName="ingredientId"
+            type="text"
+            required
+          />
+        </mat-form-field>
+
+        <!-- Ποσότητα -->
+        <mat-form-field class="quantity-field">
+          <input
+            matInput
+            placeholder="Ποσότητα"
+            formControlName="quantity"
+            type="number"
+            required
+          />
+        </mat-form-field>
+
+        <!-- Μονάδα -->
+        <mat-form-field class="unit-field">
+          <input
+            matInput
+            placeholder="Μονάδα (π.χ. γρ, κούπα)"
+            formControlName="unit"
+            required
+          />
+        </mat-form-field>
+
+        <!-- Κουμπί Διαγραφής -->
+        <button
+          mat-icon-button
+          color="warn"
+          (click)="removeStepIngredients(i)"
+          aria-label="Αφαίρεση Υλικού"
+        >
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
+    </div>
+
+    <button
+      mat-button
+      color="primary"
+      (click)="addStepIngredients()"
+      type="button"
+    >
+      Προσθήκη Υλικού
+    </button>
+  </div>
+
+  <div mat-dialog-actions>
+    <button mat-button (click)="onClose()">Ακύρωση</button>
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="save()"
+      [disabled]="stepIngredientsForm.invalid"
+    >
+      Αποθήκευση
+    </button>
+  </div>
+</form>
+
